@@ -1,39 +1,66 @@
 <script lang="ts">
-    import AppRail from "$lib/AppRail.svelte";
-	import Footer from "$lib/Footer.svelte";
-import Titlebar from "$lib/Titlebar.svelte";
     import "../app.css";
+    import AppRail from "$lib/AppRail.svelte";
+	import Drawer from "$lib/Drawer.svelte";
+	import Footer from "$lib/Footer.svelte";
+    import Titlebar from "$lib/Titlebar.svelte";
+    import IconFiles from '~icons/codicon/files';
     import type { LayoutData } from './$types';
+	import type { SvelteComponent } from "svelte";
+	import type { SvelteHTMLElements } from "svelte/elements";
+	import TestDrawerComponent from "$lib/TestDrawerComponent.svelte";
+
     
     export let data: LayoutData;
+    
+    type appRailData = {
+        icon: SvelteComponent<SvelteHTMLElements['svg']>;
+        drawer: SvelteComponent;
+    };
+
+    let appRailData = [
+        {
+            icon: IconFiles,
+            drawer: TestDrawerComponent
+        },
+        {
+            icon: IconFiles,
+            drawer: TestDrawerComponent
+        },
+        {
+            icon: IconFiles,
+            drawer: TestDrawerComponent
+        },
+    ];
 </script>
 
-<div class="main-container">
+<div class="root-container">
     <Titlebar />
-    <main class="test">
+    <div class="central-container">
         <AppRail />
-        <div style="flex-grow: 1;">
+        <Drawer />
+        <main class="main">
             <slot />
-        </div>
-    </main>
+        </main>
+    </div>
     <Footer />
 </div>
 
 <style>
-    .main-container {
+    .root-container {
         display: flex;
         flex-direction: column;
         height: 100%;
     }
-
-    .test {
+    
+    .central-container {
         display: flex;
         flex-grow: 1;
     }
-
-    .test2 {
-        display: flex;
-        flex-direction: column;
+    
+    .main {
+        background: var(--main-bg);
+        color: var(--main-color);
     }
 
     :global(:root) {
@@ -42,7 +69,7 @@ import Titlebar from "$lib/Titlebar.svelte";
         --font-size: 14px;
 
         /* title bar */
-        --title-bar-bg: #1e1e1e;
+        --title-bar-bg: #1f1f1f;
         --title-bar-height: 30px;
         --title-bar-padding: 5px 0 5px 0;
         
@@ -60,10 +87,34 @@ import Titlebar from "$lib/Titlebar.svelte";
         /* app rail */
         --app-rail-bg: #181818;
         --app-rail-color: #d3d3d3;
+
+        /* apprail buttons */	
+        --apprail-button-border: none;
+        --apprail-button-width: 50px;
+        --apprail-button-height: 50px;
+        --apprail-button-background: transparent;
+        --apprail-button-color: #d3d3d3;
+        --apprail-button-hover-bg: #444444;
+        --apprail-button-border: #d3d3d3;
+        --apprail-button-padding: 5px 10px 5px 10px;
+        --apprail-button-border-radius: 5px;
+        
+        /* drawer */
+        --drawer-bg: var(--app-rail-bg);
+        --drawer-color: var(--app-rail-color);
+        --drawer-open-width: 300px;
+
         
         /* footer */
         --footer-bg: #181818;
         --footer-color: #d3d3d3;
+        
+        /* main */
+        --main-bg: #1f1f1f;
+        --main-color: #d3d3d3;
+        
+        /* separator */
+        --tile-separator-bg: #333333;
         
         font-family: var(--font);
         font-size: var(--font-size);
