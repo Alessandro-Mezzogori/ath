@@ -3,16 +3,18 @@ import { writable } from "svelte/store";
 
 export type DrawerStore = {
     isOpen: boolean;
-    element: SvelteComponent | undefined;
+    key?: string;
 }
 
 function createDrawerStore(){
     const drawerStore = writable<DrawerStore>({
         isOpen: false,
-        element: undefined,
+        key: undefined,
     });
 
     return drawerStore;
 }
+
+// TODO drawer typesafe for keys with as const 
 
 export const drawer = createDrawerStore();

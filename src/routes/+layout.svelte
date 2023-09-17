@@ -1,88 +1,76 @@
 <script lang="ts">
     import "../app.css";
-    import AppRail from "$lib/AppRail.svelte";
-	import Drawer from "$lib/Drawer.svelte";
+    import AppRail, { type AppRailButtonData } from "$lib/AppRail.svelte";
+	import Drawer, { drawerComponent, type DrawerComponent } from "$lib/Drawer.svelte";
 	import Footer from "$lib/Footer.svelte";
     import Titlebar from "$lib/Titlebar.svelte";
     import IconFiles from '~icons/codicon/files';
-    import type { LayoutData } from './$types';
-	import type { SvelteComponent } from "svelte";
-	import type { SvelteHTMLElements } from "svelte/elements";
+    // import type { LayoutData } from './$types';
 	import TestDrawerComponent from "$lib/TestDrawerComponent.svelte";
-
+	import TestDrawerComponent2 from "$lib/TestDrawerComponent2.svelte";
+	import MainLayout from "$lib/layout/MainLayout.svelte";
     
-    export let data: LayoutData;
-    
-    type appRailData = {
-        icon: SvelteComponent<SvelteHTMLElements['svg']>;
-        drawer: SvelteComponent;
-    };
-
-    let appRailData = [
+    // TODO: apprailDAta e drawercomponent in a store 
+    let appRailData: AppRailButtonData[]  = [
         {
             icon: IconFiles,
-            drawer: TestDrawerComponent
+            key: "0",
         },
         {
             icon: IconFiles,
-            drawer: TestDrawerComponent
-        },
-        {
-            icon: IconFiles,
-            drawer: TestDrawerComponent
+            key: "1",
         },
     ];
+
+    let drawerComponents: DrawerComponent<any>[] = [
+        drawerComponent<TestDrawerComponent>({
+            key: "0",
+            component: TestDrawerComponent,
+            props: {
+                test: 3
+            },
+        }),
+        drawerComponent<TestDrawerComponent>({
+            key: "1",
+            component: TestDrawerComponent2,
+        })
+    ]
 </script>
 
-<div class="root-container">
-    <Titlebar />
-    <div class="central-container">
-        <AppRail />
-        <Drawer />
-        <main class="main">
-            <slot />
-        </main>
-    </div>
-    <Footer />
-</div>
+<MainLayout>
+    <Titlebar slot="titlebar"/>
+    <AppRail data={appRailData} slot="sidebar"/>
+    <Drawer components={drawerComponents}  slot="drawer"/>
+    <Footer slot="footer"/>
+    <slot slot="main"/>
+</MainLayout>
 
 <style>
-    .root-container {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-    
-    .central-container {
-        display: flex;
-        flex-grow: 1;
-    }
-    
-    .main {
-        background: var(--main-bg);
-        color: var(--main-color);
-    }
-
     :global(:root) {
         /* general */
         --font: 'Consolas', 'Courier New', monospace;
         --font-size: 14px;
 
         /* title bar */
-        --title-bar-bg: #1f1f1f;
-        --title-bar-height: 30px;
-        --title-bar-padding: 5px 0 5px 0;
+        --titlebar-bg: #1f1f1f;
+        --titlebar-height: 30px;
+        --titlebar-padding: 0px 0 0px 0;
+        --titlebar-color: #d3d3d3;
         
         /* title bar buttons */	
-        --title-bar-button-border: none;
-        --title-bar-button-width: fit;
-        --title-bar-button-height: var(--title-bar-height);
-        --title-bar-button-background: transparent;
-        --title-bar-button-text-color: #d3d3d3;
-        --title-bar-button-hover-bg: #444444;
-        --title-bar-button-border: #d3d3d3;
-        --title-bar-button-padding: 5px 10px 5px 10px;
-        --title-bar-button-border-radius: 5px;
+        --titlebar-button-border: none;
+        --titlebar-button-width: fit;
+        --titlebar-button-height: var(--titlebar-height);
+        --titlebar-button-background: transparent;
+        --titlebar-button-hover-bg: #444444;
+        --titlebar-button-border: #d3d3d3;
+        --titlebar-button-padding: 5px 10px 5px 10px;
+        --titlebar-button-border-radius: 5px;
+        
+        /* title bar icon buttons */
+        --titlebar-icon-button-border: none;
+        --titlebar-icon-width: var(--titlebar-height);
+        --titlebar-icon-height: var(--titlebar-height);
         
         /* app rail */
         --app-rail-bg: #181818;
@@ -102,7 +90,6 @@
         /* drawer */
         --drawer-bg: var(--app-rail-bg);
         --drawer-color: var(--app-rail-color);
-        --drawer-open-width: 300px;
 
         
         /* footer */

@@ -15,25 +15,39 @@
     async function close(){
         await appWindow.close();
     }
+    
+    let fileOpen: boolean = false;
 </script>
 
 <div data-tauri-drag-region class="titlebar">
-    <div>
-        <button class="titlebar-button" id="titlebar-close" >
-            <span>logo</span>
-        </button>
-        <button class="titlebar-button" id="titlebar-close" >
+    <div class="titlebar-sub">
+        <button class="titlebar-button dropdown" id="titlebar-close">
             file
+            <ul>
+                <li>test</li>   
+                <li>test</li>   
+                <li>test</li>   
+                <li>test</li>   
+            </ul>
+        </button>
+        <button class="titlebar-button dropdown" id="titlebar-close">
+            file
+            <ul>
+                <li>test</li>   
+                <li>test</li>   
+                <li>test</li>   
+                <li>test</li>   
+            </ul>
         </button>
     </div>
     <div>
-        <button class="titlebar-button" id="titlebar-minimize" on:click={minimize}>
+        <button class="titlebar-icon-button" id="titlebar-minimize" on:click={minimize}>
             <IconMinimize />
         </button>
-        <button class="titlebar-button" id="titlebar-maximize" on:click={toggleMaximize}>
+        <button class="titlebar-icon-button" id="titlebar-maximize" on:click={toggleMaximize}>
             <IconMaximize />
         </button>
-        <button class="titlebar-button" id="titlebar-close" on:click={close}>
+        <button class="titlebar-icon-button" id="titlebar-close" on:click={close}>
             <IconClose />
         </button>
     </div>  
@@ -41,33 +55,61 @@
 
 <style>
     .titlebar {
-        height: var(--title-bar-height);
-        background: var(--title-bar-bg);
-        padding: var(--title-bar-padding);
         user-select: none;
         display: flex;
         justify-content: space-between;
-        position: relative;
-        top: 0;
-        left: 0;
-        right: 0;
+    }
+    
+    .titlebar-sub {
+        display: flex;
     }
     
     .titlebar-button {
         display: inline-block;
         text-align: center;
-        width: var(--title-bar-button-width);
-        height: var(--title-bar-button-height);
-        border: var(--title-bar-button-border);
-        border-radius: var(--title-bar-button-border-radius);
-        color: var(--title-bar-button-text-color);
-        padding: var(--title-bar-button-padding);
+        width: var(--titlebar-button-width);
+        height: var(--titlebar-button-height);
+        border: var(--titlebar-button-border);
+        border-radius: var(--titlebar-button-border-radius);
+        color: var(--titlebar-button-text-color);
+        padding: var(--titlebar-button-padding);
+        font-family: var(--font);
+        font-size: var(--font-size);
+        background: transparent;
+    }
+
+    .titlebar-icon-button {
+        display: inline-block;
+        text-align: center;
+        width: var(--titlebar-button-width);
+        border: var(--titlebar-button-border);
+        color: var(--titlebar-button-text-color);
+        padding: var(--titlebar-button-padding);
         font-family: var(--font);
         font-size: var(--font-size);
         background: transparent;
     }
     
-    .titlebar-button:hover {
-        background-color: var(--title-bar-button-hover-bg);
+    .titlebar-button:hover, .titlebar-icon-button:hover {
+        background-color: var(--titlebar-button-hover-bg);
+    }
+    
+    .dropdown {
+        display: block;
+    }
+    
+    .dropdown ul {
+        background-color: red;
+        visibility: hidden;
+        opacity: 0;
+        position: relative;
+        margin-top: 1rem;
+        display: none;
+    }
+    
+    .dropdown:hover > ul, ul:hover {
+        visibility: visible;
+        opacity: 1;
+        display: block;
     }
 </style>

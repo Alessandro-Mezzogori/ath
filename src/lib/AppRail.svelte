@@ -1,43 +1,46 @@
+<script context="module" lang="ts">
+	import type { SvelteComponent } from 'svelte';
+	import type { SvelteHTMLElements } from 'svelte/elements';
+
+    export type AppRailButtonData = {
+        icon: typeof SvelteComponent<SvelteHTMLElements['svg']>;
+        key: string; 
+    };
+</script>
+
 <script lang="ts">
-    import IconFiles from '~icons/codicon/files';
     import { drawer } from './drawer';
+    export let data: AppRailButtonData[];
 
-    let lastClicked: string | undefined = undefined;
-    function test(key: string){
-        let isOpen = $drawer;
-        let currentElement = $drawer.element;
-        if(isOpen && lastClicked === key){
-            drawer.set({
-               isOpen: false,
-               element: currentElement 
-            });
-
+    function onAppRailClick(key: string){
+        console.log(key);
+        const drawerValue = $drawer;
+        
+        if(drawerValue.key === key){
+            $drawer.isOpen = !$drawer.isOpen;
+            $drawer = $drawer;
             return;
         }
         
-        lastClicked = key;
-        if(!isOpen){
-            drawer.set({
-               isOpen: true,
-               element: currentElement 
-            });
-
-        }
+        $drawer = {
+            isOpen: true,
+            key: key
+        };
     }
 </script>
 
 <div class="apprail">
-    {#each {length: 3} as _, i}
-    <button class="apprail-button" on:click={() => test(i.toString())}>
-       <IconFiles /> 
+    {#each data as item}
+    <button class="apprail-button" on:click={() => onAppRailClick(item.key)}>
+        <svelte:component this={item.icon} />
     </button>
     {/each}
 </div>
 
 <style>
     .apprail {
-        background: var(--app-rail-bg);
-        color: var(--app-rail-color);
+        display: flex;
+        flex-direction: column;
     }
 
     .apprail-button {
