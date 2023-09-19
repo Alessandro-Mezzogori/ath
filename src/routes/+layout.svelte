@@ -9,6 +9,10 @@
 	import TestDrawerComponent from "$lib/TestDrawerComponent.svelte";
 	import TestDrawerComponent2 from "$lib/TestDrawerComponent2.svelte";
 	import MainLayout from "$lib/layout/MainLayout.svelte";
+	import { onMount } from "svelte";
+    import { commandGroups } from "$lib/menu/commands";
+    import { register } from "@tauri-apps/api/globalShortcut";
+        
     
     // TODO: apprailDAta e drawercomponent in a store 
     let appRailData: AppRailButtonData[]  = [
@@ -35,6 +39,20 @@
             component: TestDrawerComponent2,
         })
     ]
+    
+    onMount(async () => {
+        var commands = commandGroups.flatMap(x => x.commands);
+        
+        for(let i = 0; i < commands.length; ++i){
+            let command = commands[i];
+            
+            if(!command.shortcut){
+                continue;
+            }
+            
+            await register(command.shortcut, command.command);
+        }
+    });
 </script>
 
 <MainLayout>

@@ -4,37 +4,22 @@
     export let isOpen: boolean = false;
     export let name: string;
     
-    let closing = false;
     const close = () => { 
-        closing = true;
         isOpen = false
-        
-        console.log("closed");
     }
 
     const toggle = () => { 
-        if(closing) {
-            closing = false
-            return;
-        }
-
         isOpen = !isOpen
-        
-        console.log("open " + isOpen);
     };
-    
-    function test(e: CustomEvent<void>){
-        console.log(e.target);
-        console.log(e.currentTarget);
-        console.log(e.detail);
-    }
 </script>
 
 <div>
     <button on:click|stopPropagation={toggle} class="titlebar-button">{name}</button>
     {#if isOpen}
         <div class="dropdown" role="button" tabindex="0" on:mouseleave={close}>
-            <slot />
+            <ul>
+                <slot />
+            </ul>
         </div>
     {/if}
 </div>

@@ -3,9 +3,9 @@
     import IconMinimize from '~icons/codicon/chrome-minimize';
     import IconMaximize from '~icons/codicon/chrome-restore';
     import IconClose from '~icons/codicon/chrome-close';
-    import { open } from '@tauri-apps/api/dialog';
-    import { invoke } from '@tauri-apps/api/tauri';
-	import MenuDropdown from './MenuDropdown.svelte';
+	import MenuDropdown from './menu/Menu.svelte';
+	import MenuItem from './menu/MenuItem.svelte';
+    import { commandGroups } from './menu/commands';
 
     async function minimize(){
         await appWindow.minimize();
@@ -18,42 +18,21 @@
     async function close(){
         await appWindow.close();
     }
-    
-    async function openMarkdown(){
-        const selected = await open({
-            multiple: false,
-            filters: [{
-                name: 'Markdown',
-                extensions: ['md']
-            }]
-        });
-        
-        if(!Array.isArray(selected) && selected !== null){
-           console.log(selected);
-           
-           // TODO open file in editor in new tab? 
-           invoke("load_file_contents", {
-               path: selected
-           }).then(x => console.log(x))
-           .catch(err => console.error(err));
-        }
-    }
-    
-    let fileOpen: boolean = false;
 </script>
 
 <div data-tauri-drag-region class="titlebar">
     <div class="titlebar-sub">
-        <button class="titlebar-button dropdown" id="titlebar-close" on:click={openMarkdown}>
-            open
-        </button>
-        <MenuDropdown name={"test lel"}>
-            <ul>
-                <li>ciao</li>
-                <li>ciao</li>
-                <li>ciao</li>
-            </ul>
+        {#each commandGroups as commandGroup}
+        <MenuDropdown name={commandGroup.name}>
+            {#each commandGroup.commands as command}
+            <MenuItem 
+                name={command.name}
+                command={command.command}
+                shortcut={command.shortcut}
+            />
+            {/each}
         </MenuDropdown>
+        {/each}
     </div>
     <div>
         <button class="titlebar-icon-button" id="titlebar-minimize" on:click={minimize}>
