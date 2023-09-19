@@ -54,7 +54,7 @@
         /* title bar */
         --titlebar-bg: #1f1f1f;
         --titlebar-height: 30px;
-        --titlebar-padding: 0px 0 0px 0;
+        --titlebar-padding: 0px 0px 0px 0px;
         --titlebar-color: #d3d3d3;
         
         /* title bar buttons */	

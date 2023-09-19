@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@tauri-apps/api": "^1.4.0"
+		"@tauri-apps/api": "^1.4.0",
+		"svelte-legos": "^0.2.2"
 	}
 }

@@ -23,8 +23,15 @@
         "unmaximize": true,
         "unminimize": true,
         "startDragging": true
+      },
+      "dialog": {
+        "all": false,
+        "ask": false,
+        "confirm": false,
+        "message": false,
+        "open": true,
+        "save": true
       }
-
     },
     "bundle": {
       "active": true,
