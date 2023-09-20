@@ -1,7 +1,5 @@
 <script lang="ts">
-    import { clickOutsideAction } from 'svelte-legos';
-
-    export let isOpen: boolean = false;
+    export let isOpen: boolean = true;
     export let name: string;
     
     const close = () => { 
@@ -16,7 +14,7 @@
 <div>
     <button on:click|stopPropagation={toggle} class="titlebar-button">{name}</button>
     {#if isOpen}
-        <div class="dropdown" role="button" tabindex="0" on:mouseleave={close}>
+        <div class="dropdown" role="button" tabindex="0" on:mouseleave={() => {}}>
             <ul>
                 <slot />
             </ul>
@@ -29,7 +27,12 @@
         background-color: var(--titlebar-bg);
         position: absolute;
         transition: all 0.5s ease;
-        margin-top: 1rem;
+        padding: 5px;
+    }
+    
+    .dropdown > ul {
+        margin: 0;
+        padding: 0;
     }
 
     .titlebar-button {

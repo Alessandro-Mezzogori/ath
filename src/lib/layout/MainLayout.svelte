@@ -47,6 +47,7 @@
         grid-area: sidebar;
         background: var(--app-rail-bg);
         color: var(--app-rail-color);
+        border: 1px solid #2b2b2b;
     }
     
     .drawer {

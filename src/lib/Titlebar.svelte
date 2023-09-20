@@ -25,11 +25,7 @@
         {#each commandGroups as commandGroup}
         <MenuDropdown name={commandGroup.name}>
             {#each commandGroup.commands as command}
-            <MenuItem 
-                name={command.name}
-                command={command.command}
-                shortcut={command.shortcut}
-            />
+            <MenuItem {command} />
             {/each}
         </MenuDropdown>
         {/each}

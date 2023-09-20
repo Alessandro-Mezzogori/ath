@@ -1,34 +1,35 @@
 <script lang="ts">
-    import { isRegistered, register } from "@tauri-apps/api/globalShortcut";
-	import { onMount } from "svelte";
+	import type { Command } from "./commands";
 
-    export let name: string;
-    export let command: () => void;
-    export let shortcut: string | undefined;
-    
-    onMount(async () => {
-        if(shortcut && !(await isRegistered(shortcut))){
-            register(shortcut, command);
-        }
-    });
+    export let command: Command;
 </script>
 
 <li class="menuitem">
-    <button 
-        class="titlebar-button"
-        on:click={command} >
-        {name}
-    </button>
-    
-    {#if shortcut}
-    <span>{shortcut}</span>
-    {/if}
+    <div on:click={command.callback} role="button" tabindex="0" on:keypress={() => {}}> 
+        <span class="titlebar-button" >
+            {command.name}
+        </span>
+        
+        {#if command.trigger}
+        <span class="shortcut-text">{command.trigger.shortcutText}</span>
+        {/if}
+    </div>
 </li>
 
 <style>
     .menuitem {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        padding-block: 0;
+        padding-inline: 15px;
+        gap: 30px;
+        border-radius: 5px;
+    }
+    
+    .menuitem:hover {
+        background-color: var(--menuitem-hover); 
     }
 
     .titlebar-button {
@@ -43,5 +44,11 @@
         font-family: var(--font);
         font-size: var(--font-size);
         background: transparent;
+    }
+    
+    .shortcut-text {
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
     }
 </style>

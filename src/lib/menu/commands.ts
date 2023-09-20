@@ -1,12 +1,13 @@
+import type { ShortcutTrigger } from "$lib/actions/shortcut";
 import { openMarkdown } from "./commandFunctions";
 
-export type Command = {
+export interface Command {
     name: string;
-    command: () => void;
-    shortcut?: string;
+    trigger?: Omit<ShortcutTrigger, 'callback'> & { shortcutText: string };
+    callback: () => void;
 }
 
-export type CommandGroup = {
+export interface CommandGroup {
     name: string;
     commands: Command[];
 }
@@ -17,14 +18,22 @@ export const commandGroups: CommandGroup[] = [
         commands: [
             {
                 name: 'Open md',
-                command: openMarkdown,
-                shortcut: 'CommandOrControl+O'
+                callback: openMarkdown,
+                trigger: {
+                    key: 'o',
+                    modifier: ['ctrl'],
+                    shortcutText: 'Ctrl+O',
+                }
             },
             {
                 name: 'New file',
-                command: () => console.log('New file'),
-                shortcut: 'CommandOrControl+A'
-            }
+                callback: () => console.log('New file'),
+                trigger: {
+                    key: 'a',
+                    modifier: ['ctrl'],
+                    shortcutText: 'Ctrl+A',
+                },
+            },
         ]
     },
     {
@@ -32,7 +41,7 @@ export const commandGroups: CommandGroup[] = [
         commands: [
             {
                 name: 'Undo',
-                command: () => console.log('Undo'),
+                callback: () => console.log('Undo'),
             }
         ]
     }

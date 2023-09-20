@@ -5,13 +5,13 @@
 	import Footer from "$lib/Footer.svelte";
     import Titlebar from "$lib/Titlebar.svelte";
     import IconFiles from '~icons/codicon/files';
-    // import type { LayoutData } from './$types';
+    import type { LayoutData } from './$types';
 	import TestDrawerComponent from "$lib/TestDrawerComponent.svelte";
 	import TestDrawerComponent2 from "$lib/TestDrawerComponent2.svelte";
 	import MainLayout from "$lib/layout/MainLayout.svelte";
-	import { onMount } from "svelte";
-    import { commandGroups } from "$lib/menu/commands";
-    import { register } from "@tauri-apps/api/globalShortcut";
+	import { shortcut } from "$lib/actions/shortcut";
+    
+    export let data: LayoutData;
         
     
     // TODO: apprailDAta e drawercomponent in a store 
@@ -39,21 +39,13 @@
             component: TestDrawerComponent2,
         })
     ]
-    
-    onMount(async () => {
-        var commands = commandGroups.flatMap(x => x.commands);
-        
-        for(let i = 0; i < commands.length; ++i){
-            let command = commands[i];
-            
-            if(!command.shortcut){
-                continue;
-            }
-            
-            await register(command.shortcut, command.command);
-        }
-    });
 </script>
+
+<svelte:window 
+    use:shortcut={{
+        trigger: data.shortcutTriggers
+    }}
+    />
 
 <MainLayout>
     <Titlebar slot="titlebar"/>
@@ -89,6 +81,11 @@
         --titlebar-icon-button-border: none;
         --titlebar-icon-width: var(--titlebar-height);
         --titlebar-icon-height: var(--titlebar-height);
+        
+        /* Menu */
+
+        /* Menu Item */
+        --menuitem-hover: #04395e;
         
         /* app rail */
         --app-rail-bg: #181818;
